@@ -18,6 +18,13 @@ the archive's existing type `Lax808846.Ram.Program`. The local `Program`
 abbreviation is definitionally that same type. All four schemes quantify over
 real `ε > 0` and require approximation ratio `1 + ε`.
 
+Both fixed-ratio algorithms and schemes use the shared
+`ApproximationAlgorithm.ApproximatesWithin` predicate. `RApproximation`
+specializes it to ratio `r` with the instance as argument; `SchemeWithin`
+specializes it to ratio `1 + ε` with the precision-and-instance pair as
+argument. Correctness and runtime are defined once; only the ratio, input
+convention, and asymptotic quantifiers differ.
+
 ## Developing the algorithm at a higher level
 
 Use [lax-62](https://laxarchive.org/lax-62/) in the downstream **proof package**

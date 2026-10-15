@@ -30,7 +30,7 @@ universe u v
 def QPTAS {α : Type u} {β : Type v} {problem : Problem α β}
     (alg : Program) (inputs : InputClass α) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ c d : ℕ, 0 < c ∧ 0 < d ∧
-    ApproximatesWithin (problem := problem) alg inputs ε
+    SchemeWithin (problem := problem) alg inputs ε
       (fun n => 2 ^ (c * (Nat.log2 (n + 2) + 1) ^ d))
 
 end Lax213208.QPTAS

@@ -1,5 +1,4 @@
-import Lax213208.Approximation
-import Lax213208.Programs
+import Lax213208.ApproximationAlgorithm
 import Mathlib.Data.Real.Archimedean
 import Lax560851.StructuralCombinators
 
@@ -14,7 +13,9 @@ One program handles all accuracies. For maximization the symmetric ratio
 convention gives $\mathrm{value}\ge\mathrm{OPT}/(1+\varepsilon)$, which
 in particular is at least $(1-\varepsilon)\mathrm{OPT}$.
 
-`ApproximatesWithin alg inputs ε T` requires the approximation guarantee
+`SchemeWithin alg inputs ε T` specializes the same `ApproximatesWithin`
+predicate used for fixed-ratio algorithms to $r=1+\varepsilon$ and the
+precision-and-instance argument. It requires the approximation guarantee
 and termination within $T(n)$ RAM instructions on every instance of binary
 size $n$ in the class. The same budget bounds the sufficient word length
 in bits. Here $n$ measures only the instance, not the accuracy parameter.
@@ -42,7 +43,7 @@ namespace Lax213208.ApproximationScheme
 
 open scoped NNReal
 
-open OptimizationProblem Programs Approximation
+open OptimizationProblem Programs ApproximationAlgorithm
 open Lax560851.StructuralPresentation
 
 universe u v
@@ -55,11 +56,9 @@ noncomputable def precision (ε : ℝ) : ℕ :=
 def schemeInput {α : Type u} (input : Presentation α) : Presentation (ℕ × α) :=
   Lax560851.StructuralCombinators.prod Lax560851.StructuralCombinators.nat input
 
-def ApproximatesWithin {α : Type u} {β : Type v} {problem : Problem α β}
+def SchemeWithin {α : Type u} {β : Type v} {problem : Problem α β}
     (alg : Program) (inputs : InputClass α) (ε : ℝ) (T : ℕ → ℕ) : Prop :=
-  ∀ x ∈ inputs, ∃ y,
-    IsApproximation problem (1 + ε.toNNReal) x y ∧
-    RunsWithin alg (schemeInput problem.input) problem.output
-      (precision ε, x) y (T (inputSize problem x))
+  ApproximatesWithin (problem := problem) alg inputs (1 + ε.toNNReal) T
+    (schemeInput problem.input) (fun x => (precision ε, x))
 
 end Lax213208.ApproximationScheme

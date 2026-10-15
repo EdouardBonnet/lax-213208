@@ -36,7 +36,7 @@ def EPTAS {α : Type u} {β : Type v} {problem : Problem α β}
   ∃ f : ℕ → ℕ, Computable f ∧
     (∀ k : ℕ, 0 < k → 0 < f k) ∧
     ∃ d : ℕ, 0 < d ∧ ∀ ε : ℝ, 0 < ε →
-      ApproximatesWithin (problem := problem) alg inputs ε
+      SchemeWithin (problem := problem) alg inputs ε
         (fun n => f (precision ε) * (n + 2) ^ d)
 
 end Lax213208.EPTAS

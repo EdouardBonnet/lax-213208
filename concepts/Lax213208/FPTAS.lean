@@ -30,7 +30,7 @@ def FPTAS {α : Type u} {β : Type v} {problem : Problem α β}
     (alg : Program) (inputs : InputClass α) : Prop :=
   ∃ c d e : ℕ, 0 < c ∧ 0 < d ∧ 0 < e ∧
     ∀ ε : ℝ, 0 < ε →
-      ApproximatesWithin (problem := problem) alg inputs ε
+      SchemeWithin (problem := problem) alg inputs ε
         (fun n => c * (n + 2) ^ d * (precision ε + 1) ^ e)
 
 end Lax213208.FPTAS

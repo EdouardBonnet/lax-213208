@@ -1,10 +1,12 @@
 import Lax213208.Programs
 import Lax213208.OptimizationProblem
 import Lax213208.Approximation
-import Lax213208.ApproximationAlgorithm
+import Lax213208.AlgorithmInput
 import Lax213208.RApproximation
-import Lax213208.ApproximationScheme
+import Lax213208.RunningTime
 import Lax213208.PTAS
 import Lax213208.FPTAS
 import Lax213208.EPTAS
 import Lax213208.QPTAS
+import Lax213208.PolynomialComputation
+import Lax213208.LReduction

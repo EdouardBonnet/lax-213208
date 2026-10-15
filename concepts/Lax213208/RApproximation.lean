@@ -1,36 +1,30 @@
-import Lax213208.ApproximationAlgorithm
+import Lax213208.Approximation
+import Lax213208.AlgorithmInput
+import Lax213208.Programs
 
 /-!
 ---
-title: Polynomial-time r-approximation algorithms
+title: Approximation guarantees
 type: definition
 ---
-A program is an $r$-approximation algorithm on an input class if $r\ge1$
-and on every instance in the class it returns an $r$-approximate feasible
-solution in polynomial time. The program receives only the instance;
-the fixed ratio is not an additional input.
+A program approximates within $r\ge1$ if it returns a feasible
+$r$-approximate solution on every instance in the class. This requires
+termination, with no restriction on running time.
 
-Explicitly, there are positive integers $c,d$ such that the running time
-on every instance of binary size $n$ is at most $c(n+2)^d$.
-The same bound is a sufficient word length in bits, as in `RunsWithin`.
-The constants may depend on the program, problem, class, and fixed ratio,
-but not on the instance. The shift by two includes empty inputs.
-This specializes the shared `ApproximatesWithin` predicate to ratio $r$
-and the identity argument map, with no accuracy parameter on the input.
+The optional accuracy selects the scheme input convention. Both ordinary
+algorithms and schemes use this same predicate.
 -/
 
 namespace Lax213208.RApproximation
 
-open scoped NNReal
+open OptimizationProblem Approximation AlgorithmInput Programs
 
-open OptimizationProblem Programs ApproximationAlgorithm
+variable {Instance Solution : Type*} {problem : Problem Instance Solution}
 
-universe u v
-
-def RApproximation {α : Type u} {β : Type v} {problem : Problem α β}
-    (alg : Program) (inputs : InputClass α) (r : ℝ≥0) : Prop :=
-  ∃ c d : ℕ, 0 < c ∧ 0 < d ∧
-    ApproximatesWithin (problem := problem) alg inputs r
-      (fun n => c * (n + 2) ^ d) problem.input id
+def Approximates (alg : Program) (inputs : Set Instance) (r : ℝ)
+    (accuracy : Option ℝ := none) : Prop :=
+  1 ≤ r ∧ ∀ x ∈ inputs, ∃ y,
+    Returns alg (inputTape problem accuracy x) (problem.output y) ∧
+    IsApproximation problem r x y
 
 end Lax213208.RApproximation

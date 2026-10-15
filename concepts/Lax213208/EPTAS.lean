@@ -1,4 +1,5 @@
-import Lax213208.ApproximationScheme
+import Lax213208.RApproximation
+import Lax213208.RunningTime
 import Mathlib.Computability.Partrec
 
 /-!
@@ -6,37 +7,22 @@ import Mathlib.Computability.Partrec
 title: Efficient polynomial-time approximation schemes
 type: definition
 ---
-A program is an efficient polynomial-time approximation scheme (EPTAS)
-on an input class if, for every real $\varepsilon>0$, it returns a
-$(1+\varepsilon)$-approximation in time $f(K(\varepsilon))(n+2)^d$,
-where $d$ is a fixed positive integer,
-$K(\varepsilon)=\max\{1,\lceil1/\varepsilon\rceil\}$ is the supplied precision,
-and $f$ is a total computable function, positive on positive integers.
-
-The exponent of the instance size is independent of accuracy.
-The coefficient may have arbitrary computable dependence on the supplied precision.
-Both the function and exponent are chosen before the accuracy and instance.
-This uses the effective convention for parameter dependence: the bound
-as a function of the integer precision must be computable, even for an
-arbitrary promise class. This avoids imposing a notion of exact real computation
-on the function describing the accuracy dependence.
-
-The displayed bound also bounds the sufficient word length in bits, following
-`RunsWithin`. Instance size is the binary size of the fixed structural arena.
+An EPTAS has ratio $1+\varepsilon$ in time $f(K)(n+2)^d$, where
+$K=\max\{1,\lceil1/\varepsilon\rceil\}$, $f$ is computable, and the
+exponent $d$ is independent of accuracy.
 -/
 
 namespace Lax213208.EPTAS
 
-open OptimizationProblem Programs ApproximationScheme
+open OptimizationProblem Programs AlgorithmInput RApproximation RunningTime
 
-universe u v
+variable {Instance Solution : Type*} {problem : Problem Instance Solution}
 
-def EPTAS {α : Type u} {β : Type v} {problem : Problem α β}
-    (alg : Program) (inputs : InputClass α) : Prop :=
-  ∃ f : ℕ → ℕ, Computable f ∧
-    (∀ k : ℕ, 0 < k → 0 < f k) ∧
+def EPTAS (alg : Program) (inputs : Set Instance) : Prop :=
+  ∃ f : ℕ → ℕ, Computable f ∧ (∀ k > 0, 0 < f k) ∧
     ∃ d : ℕ, 0 < d ∧ ∀ ε : ℝ, 0 < ε →
-      SchemeWithin (problem := problem) alg inputs ε
-        (fun n => f (precision ε) * (n + 2) ^ d)
+      Approximates (problem := problem) alg inputs (1 + ε) (some ε) ∧
+      RunsInTime (problem := problem) alg inputs
+        (fun n => f (precision ε) * (n + 2) ^ d) (some ε)
 
 end Lax213208.EPTAS

@@ -1,36 +1,27 @@
-import Lax213208.ApproximationScheme
+import Lax213208.RApproximation
+import Lax213208.RunningTime
 
 /-!
 ---
 title: Fully polynomial-time approximation schemes
 type: definition
 ---
-A program is a fully polynomial-time approximation scheme (FPTAS) on an
-input class if, for every real $\varepsilon>0$, it returns a
-$(1+\varepsilon)$-approximation in time polynomial in both the instance
-size $n$ and $1/\varepsilon$.
-
-There are positive integers $c,d,e$, independent of both $\varepsilon$ and
-the instance, bounding the running time by
-$c(n+2)^d(K(\varepsilon)+1)^e$, where
-$K(\varepsilon)=\max\{1,\lceil1/\varepsilon\rceil\}$ is the supplied precision.
-This natural-number bound is polynomial in $n$ and $1+1/\varepsilon$.
-
-The displayed bound also bounds the sufficient word length in bits, following
-`RunsWithin`. Instance size is the binary size of the fixed structural arena.
+An FPTAS has ratio $1+\varepsilon$ in time polynomial in both instance
+size and $1/\varepsilon$. The constants and exponents are independent
+of the instance and accuracy.
 -/
 
 namespace Lax213208.FPTAS
 
-open OptimizationProblem Programs ApproximationScheme
+open OptimizationProblem Programs AlgorithmInput RApproximation RunningTime
 
-universe u v
+variable {Instance Solution : Type*} {problem : Problem Instance Solution}
 
-def FPTAS {α : Type u} {β : Type v} {problem : Problem α β}
-    (alg : Program) (inputs : InputClass α) : Prop :=
+def FPTAS (alg : Program) (inputs : Set Instance) : Prop :=
   ∃ c d e : ℕ, 0 < c ∧ 0 < d ∧ 0 < e ∧
     ∀ ε : ℝ, 0 < ε →
-      SchemeWithin (problem := problem) alg inputs ε
-        (fun n => c * (n + 2) ^ d * (precision ε + 1) ^ e)
+      Approximates (problem := problem) alg inputs (1 + ε) (some ε) ∧
+      RunsInTime (problem := problem) alg inputs
+        (fun n => c * (n + 2) ^ d * (precision ε + 1) ^ e) (some ε)
 
 end Lax213208.FPTAS

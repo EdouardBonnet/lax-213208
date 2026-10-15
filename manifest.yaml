@@ -6,6 +6,17 @@ title: "Approximation algorithms"
 authors: []
 bibEntries:
   - |
+    @article{PapadimitriouYannakakis1991,
+      author = {Christos H. Papadimitriou and Mihalis Yannakakis},
+      title = {Optimization, Approximation, and Complexity Classes},
+      journal = {Journal of Computer and System Sciences},
+      volume = {43},
+      number = {3},
+      pages = {425--440},
+      year = {1991},
+      doi = {10.1016/0022-0000(91)90023-X}
+    }
+  - |
     @book{WilliamsonShmoys2011,
       author = {David P. Williamson and David B. Shmoys},
       title = {The Design of Approximation Algorithms},

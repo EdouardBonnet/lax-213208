@@ -23,8 +23,10 @@ open scoped NNReal
 
 open OptimizationProblem
 
-def IsApproximation (problem : Problem) (r : ℝ≥0)
-    (x y : List Bool) : Prop :=
+universe u v
+
+def IsApproximation {α : Type u} {β : Type v}
+    (problem : Problem α β) (r : ℝ≥0) (x : α) (y : β) : Prop :=
   1 ≤ r ∧ problem.feasible x y ∧
     ∀ z, problem.feasible x z →
       match problem.direction with

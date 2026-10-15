@@ -15,13 +15,19 @@ the instance, bounding the running time by
 $c(n+2)^d(K(\varepsilon)+1)^e$, where
 $K(\varepsilon)=\max\{1,\lceil1/\varepsilon\rceil\}$ is the supplied precision.
 This natural-number bound is polynomial in $n$ and $1+1/\varepsilon$.
+
+The displayed bound also bounds the sufficient word length in bits, following
+`RunsWithin`. Instance size is the binary size of the fixed structural arena.
 -/
 
 namespace Lax213208.FPTAS
 
 open OptimizationProblem Programs ApproximationScheme
 
-def FPTAS {problem : Problem} (alg : Program) (inputs : InputClass) : Prop :=
+universe u v
+
+def FPTAS {α : Type u} {β : Type v} {problem : Problem α β}
+    (alg : Program) (inputs : InputClass α) : Prop :=
   ∃ c d e : ℕ, 0 < c ∧ 0 < d ∧ 0 < e ∧
     ∀ ε : ℝ, 0 < ε →
       ApproximatesWithin (problem := problem) alg inputs ε

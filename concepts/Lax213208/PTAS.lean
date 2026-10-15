@@ -15,13 +15,19 @@ Both constants may depend on $\varepsilon$; neither may depend on the instance.
 The program is fixed before $\varepsilon$ is chosen. The shift by two includes
 empty inputs. The optimization problem is an implicit parameter:
 `PTAS (problem := P) alg inputs`.
+
+The displayed bound also bounds the sufficient word length in bits, following
+`RunsWithin`. Instance size is the binary size of the fixed structural arena.
 -/
 
 namespace Lax213208.PTAS
 
 open OptimizationProblem Programs ApproximationScheme
 
-def PTAS {problem : Problem} (alg : Program) (inputs : InputClass) : Prop :=
+universe u v
+
+def PTAS {α : Type u} {β : Type v} {problem : Problem α β}
+    (alg : Program) (inputs : InputClass α) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ c d : ℕ, 0 < c ∧ 0 < d ∧
     ApproximatesWithin (problem := problem) alg inputs ε
       (fun n => c * (n + 2) ^ d)

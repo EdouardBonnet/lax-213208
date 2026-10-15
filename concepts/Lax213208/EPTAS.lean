@@ -20,13 +20,19 @@ This uses the effective convention for parameter dependence: the bound
 as a function of the integer precision must be computable, even for an
 arbitrary promise class. This avoids imposing a notion of exact real computation
 on the function describing the accuracy dependence.
+
+The displayed bound also bounds the sufficient word length in bits, following
+`RunsWithin`. Instance size is the binary size of the fixed structural arena.
 -/
 
 namespace Lax213208.EPTAS
 
 open OptimizationProblem Programs ApproximationScheme
 
-def EPTAS {problem : Problem} (alg : Program) (inputs : InputClass) : Prop :=
+universe u v
+
+def EPTAS {α : Type u} {β : Type v} {problem : Problem α β}
+    (alg : Program) (inputs : InputClass α) : Prop :=
   ∃ f : ℕ → ℕ, Computable f ∧
     (∀ k : ℕ, 0 < k → 0 < f k) ∧
     ∃ d : ℕ, 0 < d ∧ ∀ ε : ℝ, 0 < ε →

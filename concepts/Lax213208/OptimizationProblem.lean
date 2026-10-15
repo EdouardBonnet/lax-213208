@@ -21,6 +21,8 @@ Objective values on infeasible pairs are ignored.
 
 namespace Lax213208.OptimizationProblem
 
+open scoped NNReal
+
 inductive Direction
   | minimize
   | maximize

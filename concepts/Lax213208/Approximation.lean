@@ -19,6 +19,8 @@ instance has no approximate solution, because the output must be feasible.
 
 namespace Lax213208.Approximation
 
+open scoped NNReal
+
 open OptimizationProblem
 
 def IsApproximation (problem : Problem) (r : ℝ≥0)

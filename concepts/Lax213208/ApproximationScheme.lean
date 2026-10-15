@@ -28,6 +28,8 @@ Only positive $k$ are used by the scheme predicates.
 
 namespace Lax213208.ApproximationScheme
 
+open scoped NNReal
+
 open OptimizationProblem Programs Approximation
 
 def encodeInput (k : ℕ) (x : List Bool) : List Bool :=

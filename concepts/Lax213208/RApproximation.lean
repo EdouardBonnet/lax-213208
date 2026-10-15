@@ -19,6 +19,8 @@ but not on the instance. The shift by two includes empty inputs.
 
 namespace Lax213208.RApproximation
 
+open scoped NNReal
+
 open OptimizationProblem Programs Approximation
 
 def RApproximation {problem : Problem} (alg : Program)

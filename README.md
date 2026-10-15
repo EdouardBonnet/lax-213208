@@ -22,11 +22,13 @@ Approximates (problem := P) alg inputs r ∧ SubexponentialTime (problem := P) a
 `Approximates` requires termination with an approximate solution, without
 a time bound. `RunsInTime alg inputs T` supplies any desired bound. PTAS,
 FPTAS, EPTAS, and QPTAS combine approximation and running-time guarantees
-for every real `ε > 0`, with one program handling all accuracies.
+for every positive integer `k`, with one program handling all precisions.
+Each definition sets `let ε : ℝ := 1 / k` and states the ratio as `1 + ε`.
 
-Schemes use the same predicates with the optional argument `some ε`.
-The finite input is the structural arena of `(max 1 ⌈ε⁻¹⌉₊, x)`;
-the guarantee uses the real ratio `1 + ε`. Input size counts the binary
+Schemes use the same predicates with the optional argument `some k`.
+The finite input is the structural arena of `(k, x)`. Any requested positive real
+accuracy can be met by taking `k` large enough; no real-to-integer conversion
+is part of the program or the definitions. Input size counts the binary
 size of the instance arena. A resource bound controls instruction count
 and sufficient word width; the output must agree at all larger widths.
 Representations should use the archive's structural combinators or certified

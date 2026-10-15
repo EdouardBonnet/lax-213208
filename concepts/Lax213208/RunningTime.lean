@@ -1,6 +1,7 @@
 import Lax213208.AlgorithmInput
 import Lax213208.Programs
 import Mathlib.Data.Nat.Log
+import Mathlib.Data.Real.Archimedean
 
 /-!
 ---
@@ -23,24 +24,24 @@ open OptimizationProblem AlgorithmInput Programs
 variable {Instance Solution : Type*} {problem : Problem Instance Solution}
 
 def RunsInTime (alg : Program) (inputs : Set Instance) (time : ℕ → ℕ)
-    (accuracy : Option ℝ := none) : Prop :=
+    (precision : Option ℕ := none) : Prop :=
   ∀ x ∈ inputs, ∃ output,
-    RunsWithin alg (inputTape problem accuracy x) output (time (inputSize problem x))
+    RunsWithin alg (inputTape problem precision x) output (time (inputSize problem x))
 
 def PolynomialTime (alg : Program) (inputs : Set Instance)
-    (accuracy : Option ℝ := none) : Prop :=
+    (precision : Option ℕ := none) : Prop :=
   ∃ c d : ℕ, 0 < c ∧ 0 < d ∧
-    RunsInTime (problem := problem) alg inputs (fun n => c * (n + 2) ^ d) accuracy
+    RunsInTime (problem := problem) alg inputs (fun n => c * (n + 2) ^ d) precision
 
 def QuasipolynomialTime (alg : Program) (inputs : Set Instance)
-    (accuracy : Option ℝ := none) : Prop :=
+    (precision : Option ℕ := none) : Prop :=
   ∃ c d : ℕ, 0 < c ∧ 0 < d ∧
     RunsInTime (problem := problem) alg inputs
-      (fun n => 2 ^ (c * (Nat.log2 (n + 2) + 1) ^ d)) accuracy
+      (fun n => 2 ^ (c * (Nat.log2 (n + 2) + 1) ^ d)) precision
 
 def SubexponentialTime (alg : Program) (inputs : Set Instance)
-    (accuracy : Option ℝ := none) : Prop :=
+    (precision : Option ℕ := none) : Prop :=
   ∀ δ : ℝ, 0 < δ → ∃ c : ℕ, 0 < c ∧
-    RunsInTime (problem := problem) alg inputs (fun n => c * 2 ^ ⌈δ * n⌉₊) accuracy
+    RunsInTime (problem := problem) alg inputs (fun n => c * 2 ^ ⌈δ * n⌉₊) precision
 
 end Lax213208.RunningTime

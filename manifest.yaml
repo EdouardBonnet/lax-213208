@@ -32,3 +32,6 @@ bibEntries:
       year = {2005},
       url = {https://www.cs.bme.hu/~dmarx/papers/marx-esa2005.pdf}
     }
+issue:
+  repositoryId: 1320232165
+  number: 203
